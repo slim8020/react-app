@@ -1,50 +1,47 @@
 import React, {Component} from 'react';
+import TOC from './components/TOC';
+import Subject from './components/Subject';
+import Content from './components/Content';
 import './App.css';
 
 
-class Subject extends Component {
-  render(){
-  return (
-    <div className="Subject">
-        <h1>Web</h1>
-    </div>
-  );
-  }
-}
-
-
-class TOC extends Component {
-  render(){
-    return(
-        <nav>
-          <ul>
-            <li><a href="1.html">HTML</a></li>
-            <li><a href="2.html">CSS</a></li>
-            <li><a href="3.html">Javascript</a></li>
-          </ul>
-        </nav>
-    );
-  }
-}
-class Content extends Component{
-  render(){
-    return (
-      <article>
-          <h2>HTML</h2>
-          HTML is HyperText Markup Language. 
-      </article>
-    );
-  }
-}
-
-
 class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      mode:'read',
+      welcome:{title:'Welcome', desc:'Hello React!!'},
+      subject:{title:'WEB', sub:'World Wide Web'},
+      contents:[
+        {id:1, title:'HTML', desc:'HTML is for information'},
+        {id:2, title:'CSS', desc:'CSS is for design'},
+        {id:3, title:'Javascript', desc:'Javascript is for interactive'}
+      ]
+    }
+  }
+
   render(){
+    var _title, _desc = null;
+    if(this.state.mode === 'welcome'){
+        _title = this.state.welcome.title;
+        _desc = this.state.welcome.desc;
+    }
+    else if (this.state.mode === 'read'){
+      _title = this.state.contents[0].title;
+      _desc = this.state.contents[0].desc;
+    }
   return (
     <div className="App">
-      <Subject/>
-      <TOC/>
-      <Content/>
+      <Subject 
+      title = {this.state.subject.title}
+      sub = {this.state.subject.sub}
+      onChangePage = {function(){
+        this.setState( {mode:'welcome'});
+      }.bind(this)}
+      />
+      <TOC data = {this.state.contents}/>
+      <Content title={_title} content={_desc}/>
     </div>
   );
   }
